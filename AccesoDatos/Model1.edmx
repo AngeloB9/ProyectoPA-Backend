@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TicketPAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CATEGORIA">
+          <Key>
+            <PropertyRef Name="CATID" />
+          </Key>
+          <Property Name="CATID" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="CATNOMBRE" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="CATDESCRIPCION" Type="char" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="CLIID" />
+          </Key>
+          <Property Name="CLIID" Type="int" Nullable="false" />
+          <Property Name="CLINOMBRES" Type="char" MaxLength="60" Nullable="false" />
+          <Property Name="CLIAPELLIDOS" Type="char" MaxLength="60" Nullable="false" />
+          <Property Name="CLIDIRECCION" Type="char" MaxLength="250" Nullable="false" />
+          <Property Name="CLICELULAR" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="CLICORREO" Type="char" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMPLEADO">
+          <Key>
+            <PropertyRef Name="EMPID" />
+          </Key>
+          <Property Name="EMPID" Type="int" Nullable="false" />
+          <Property Name="EMPNOMBRES" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="EMPAPELLIDOS" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="EMPFECHANACIMIENTO" Type="datetime" Nullable="false" />
+          <Property Name="EMPCELULAR" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMPCORREO" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="EMPDIRECCION" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="TICKET">
+          <Key>
+            <PropertyRef Name="TIKID" />
+          </Key>
+          <Property Name="TIKID" Type="int" Nullable="false" />
+          <Property Name="CLIID" Type="int" Nullable="false" />
+          <Property Name="EMPID" Type="int" Nullable="false" />
+          <Property Name="CATID" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="TIKTITULO" Type="char" MaxLength="250" Nullable="false" />
+          <Property Name="TIKDESCRIPCION" Type="char" MaxLength="300" Nullable="false" />
+          <Property Name="TIKFECHA" Type="datetime" Nullable="false" />
+          <Property Name="TIKESTADO" Type="char" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TICKET_ATIENDE_EMPLEADO">
+          <End Role="EMPLEADO" Type="Self.EMPLEADO" Multiplicity="1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLEADO">
+              <PropertyRef Name="EMPID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="EMPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_GENERA_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="CLIID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_TIENE_CATEGORI">
+          <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA">
+              <PropertyRef Name="CATID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="CATID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="seleccionarEmpleadobyApellidoSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="apellido" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="seleccionarEmpleados_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="TicketPAModelStoreContainer">
+          <EntitySet Name="CATEGORIA" EntityType="Self.CATEGORIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMPLEADO" EntityType="Self.EMPLEADO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TICKET" EntityType="Self.TICKET" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TICKET_ATIENDE_EMPLEADO" Association="Self.FK_TICKET_ATIENDE_EMPLEADO">
+            <End Role="EMPLEADO" EntitySet="EMPLEADO" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_GENERA_CLIENTE" Association="Self.FK_TICKET_GENERA_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_TIENE_CATEGORI" Association="Self.FK_TICKET_TIENE_CATEGORI">
+            <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TicketPAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CATEGORIA">
+          <Key>
+            <PropertyRef Name="CATID" />
+          </Key>
+          <Property Name="CATID" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CATNOMBRE" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CATDESCRIPCION" Type="String" MaxLength="250" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TICKET" Relationship="Self.FK_TICKET_TIENE_CATEGORI" FromRole="CATEGORIA" ToRole="TICKET" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="CLIID" />
+          </Key>
+          <Property Name="CLIID" Type="Int32" Nullable="false" />
+          <Property Name="CLINOMBRES" Type="String" MaxLength="60" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CLIAPELLIDOS" Type="String" MaxLength="60" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CLIDIRECCION" Type="String" MaxLength="250" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CLICELULAR" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CLICORREO" Type="String" MaxLength="60" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TICKET" Relationship="Self.FK_TICKET_GENERA_CLIENTE" FromRole="CLIENTE" ToRole="TICKET" />
+        </EntityType>
+        <EntityType Name="EMPLEADO">
+          <Key>
+            <PropertyRef Name="EMPID" />
+          </Key>
+          <Property Name="EMPID" Type="Int32" Nullable="false" />
+          <Property Name="EMPNOMBRES" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMPAPELLIDOS" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMPFECHANACIMIENTO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EMPCELULAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMPCORREO" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMPDIRECCION" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TICKET" Relationship="Self.FK_TICKET_ATIENDE_EMPLEADO" FromRole="EMPLEADO" ToRole="TICKET" />
+        </EntityType>
+        <EntityType Name="TICKET">
+          <Key>
+            <PropertyRef Name="TIKID" />
+          </Key>
+          <Property Name="TIKID" Type="Int32" Nullable="false" />
+          <Property Name="CLIID" Type="Int32" Nullable="false" />
+          <Property Name="EMPID" Type="Int32" Nullable="false" />
+          <Property Name="CATID" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TIKTITULO" Type="String" MaxLength="250" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TIKDESCRIPCION" Type="String" MaxLength="300" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TIKFECHA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TIKESTADO" Type="String" MaxLength="60" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CATEGORIA" Relationship="Self.FK_TICKET_TIENE_CATEGORI" FromRole="TICKET" ToRole="CATEGORIA" />
+          <NavigationProperty Name="CLIENTE" Relationship="Self.FK_TICKET_GENERA_CLIENTE" FromRole="TICKET" ToRole="CLIENTE" />
+          <NavigationProperty Name="EMPLEADO" Relationship="Self.FK_TICKET_ATIENDE_EMPLEADO" FromRole="TICKET" ToRole="EMPLEADO" />
+        </EntityType>
+        <Association Name="FK_TICKET_TIENE_CATEGORI">
+          <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA">
+              <PropertyRef Name="CATID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="CATID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_GENERA_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="CLIID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_ATIENDE_EMPLEADO">
+          <End Role="EMPLEADO" Type="Self.EMPLEADO" Multiplicity="1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLEADO">
+              <PropertyRef Name="EMPID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="EMPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TicketPAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CATEGORIA" EntityType="Self.CATEGORIA" />
+          <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" />
+          <EntitySet Name="EMPLEADO" EntityType="Self.EMPLEADO" />
+          <EntitySet Name="TICKET" EntityType="Self.TICKET" />
+          <AssociationSet Name="FK_TICKET_TIENE_CATEGORI" Association="Self.FK_TICKET_TIENE_CATEGORI">
+            <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_GENERA_CLIENTE" Association="Self.FK_TICKET_GENERA_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_ATIENDE_EMPLEADO" Association="Self.FK_TICKET_ATIENDE_EMPLEADO">
+            <End Role="EMPLEADO" EntitySet="EMPLEADO" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <FunctionImport Name="seleccionarEmpleados_SP" ReturnType="Collection(TicketPAModel.seleccionarEmpleados_SP_Result)" />
+          <FunctionImport Name="seleccionarEmpleadobyApellidoSP" ReturnType="Collection(TicketPAModel.seleccionarEmpleadobyApellidoSP_Result)">
+            <Parameter Name="apellido" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="seleccionarEmpleados_SP_Result">
+          <Property Type="Int32" Name="EMPID" Nullable="false" />
+          <Property Type="String" Name="EMPNOMBRES" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="EMPAPELLIDOS" Nullable="false" MaxLength="60" />
+          <Property Type="DateTime" Name="EMPFECHANACIMIENTO" Nullable="false" Precision="23" />
+          <Property Type="String" Name="EMPCELULAR" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="EMPCORREO" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="EMPDIRECCION" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="seleccionarEmpleadobyApellidoSP_Result">
+          <Property Type="Int32" Name="EMPID" Nullable="false" />
+          <Property Type="String" Name="EMPNOMBRES" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="EMPAPELLIDOS" Nullable="false" MaxLength="60" />
+          <Property Type="DateTime" Name="EMPFECHANACIMIENTO" Nullable="false" Precision="23" />
+          <Property Type="String" Name="EMPCELULAR" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="EMPCORREO" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="EMPDIRECCION" Nullable="true" MaxLength="250" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TicketPAModelStoreContainer" CdmEntityContainer="TicketPAEntities">
+          <EntitySetMapping Name="CATEGORIA">
+            <EntityTypeMapping TypeName="TicketPAModel.CATEGORIA">
+              <MappingFragment StoreEntitySet="CATEGORIA">
+                <ScalarProperty Name="CATID" ColumnName="CATID" />
+                <ScalarProperty Name="CATNOMBRE" ColumnName="CATNOMBRE" />
+                <ScalarProperty Name="CATDESCRIPCION" ColumnName="CATDESCRIPCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTE">
+            <EntityTypeMapping TypeName="TicketPAModel.CLIENTE">
+              <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="CLIID" ColumnName="CLIID" />
+                <ScalarProperty Name="CLINOMBRES" ColumnName="CLINOMBRES" />
+                <ScalarProperty Name="CLIAPELLIDOS" ColumnName="CLIAPELLIDOS" />
+                <ScalarProperty Name="CLIDIRECCION" ColumnName="CLIDIRECCION" />
+                <ScalarProperty Name="CLICELULAR" ColumnName="CLICELULAR" />
+                <ScalarProperty Name="CLICORREO" ColumnName="CLICORREO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLEADO">
+            <EntityTypeMapping TypeName="TicketPAModel.EMPLEADO">
+              <MappingFragment StoreEntitySet="EMPLEADO">
+                <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+                <ScalarProperty Name="EMPNOMBRES" ColumnName="EMPNOMBRES" />
+                <ScalarProperty Name="EMPAPELLIDOS" ColumnName="EMPAPELLIDOS" />
+                <ScalarProperty Name="EMPFECHANACIMIENTO" ColumnName="EMPFECHANACIMIENTO" />
+                <ScalarProperty Name="EMPCELULAR" ColumnName="EMPCELULAR" />
+                <ScalarProperty Name="EMPCORREO" ColumnName="EMPCORREO" />
+                <ScalarProperty Name="EMPDIRECCION" ColumnName="EMPDIRECCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TICKET">
+            <EntityTypeMapping TypeName="TicketPAModel.TICKET">
+              <MappingFragment StoreEntitySet="TICKET">
+                <ScalarProperty Name="TIKID" ColumnName="TIKID" />
+                <ScalarProperty Name="CLIID" ColumnName="CLIID" />
+                <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+                <ScalarProperty Name="CATID" ColumnName="CATID" />
+                <ScalarProperty Name="TIKTITULO" ColumnName="TIKTITULO" />
+                <ScalarProperty Name="TIKDESCRIPCION" ColumnName="TIKDESCRIPCION" />
+                <ScalarProperty Name="TIKFECHA" ColumnName="TIKFECHA" />
+                <ScalarProperty Name="TIKESTADO" ColumnName="TIKESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="seleccionarEmpleados_SP" FunctionName="TicketPAModel.Store.seleccionarEmpleados_SP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketPAModel.seleccionarEmpleados_SP_Result">
+                <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+                <ScalarProperty Name="EMPNOMBRES" ColumnName="EMPNOMBRES" />
+                <ScalarProperty Name="EMPAPELLIDOS" ColumnName="EMPAPELLIDOS" />
+                <ScalarProperty Name="EMPFECHANACIMIENTO" ColumnName="EMPFECHANACIMIENTO" />
+                <ScalarProperty Name="EMPCELULAR" ColumnName="EMPCELULAR" />
+                <ScalarProperty Name="EMPCORREO" ColumnName="EMPCORREO" />
+                <ScalarProperty Name="EMPDIRECCION" ColumnName="EMPDIRECCION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="seleccionarEmpleadobyApellidoSP" FunctionName="TicketPAModel.Store.seleccionarEmpleadobyApellidoSP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketPAModel.seleccionarEmpleadobyApellidoSP_Result">
+                <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+                <ScalarProperty Name="EMPNOMBRES" ColumnName="EMPNOMBRES" />
+                <ScalarProperty Name="EMPAPELLIDOS" ColumnName="EMPAPELLIDOS" />
+                <ScalarProperty Name="EMPFECHANACIMIENTO" ColumnName="EMPFECHANACIMIENTO" />
+                <ScalarProperty Name="EMPCELULAR" ColumnName="EMPCELULAR" />
+                <ScalarProperty Name="EMPCORREO" ColumnName="EMPCORREO" />
+                <ScalarProperty Name="EMPDIRECCION" ColumnName="EMPDIRECCION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

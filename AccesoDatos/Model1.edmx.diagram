@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="02ab50a5c61b4daaa1ac1dcfad0e5216" Name="Diagram1">
+        <EntityTypeShape EntityType="TicketPAModel.CATEGORIA" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketPAModel.CLIENTE" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketPAModel.EMPLEADO" Width="1.5" PointX="5.5" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketPAModel.TICKET" Width="1.5" PointX="4.875" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="TicketPAModel.FK_TICKET_TIENE_CATEGORI" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketPAModel.FK_TICKET_GENERA_CLIENTE" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketPAModel.FK_TICKET_ATIENDE_EMPLEADO" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
