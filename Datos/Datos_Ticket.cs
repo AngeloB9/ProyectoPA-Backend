@@ -60,6 +60,7 @@ namespace Datos
             TICKET Ticketexiste = seleccionarTicketByID(actualizarTic.TIKID);
             if (Ticketexiste != null)
             {
+                //No está el ID del ticket porque no se permite actualizar el ID
                 Ticketexiste.CLIID = actualizarTic.CLIID;
                 Ticketexiste.EMPID = actualizarTic.EMPID;
                 Ticketexiste.CATID = actualizarTic.CATID;

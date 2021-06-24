@@ -48,6 +48,7 @@ namespace Datos
             CATEGORIA categoriaexiste = seleccionarcategoriabyID(actualizarcat.CATID);
             if (categoriaexiste != null)
             {
+                //No se actualiza el ID
                 categoriaexiste.CATNOMBRE = actualizarcat.CATNOMBRE;
                 categoriaexiste.CATDESCRIPCION = actualizarcat.CATDESCRIPCION;
                 contexto.SaveChanges();
